@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8" />
+<body>
+	<script type="text/javascript" th:fragment="javascript">
+		$(document).ready(function() {
+			var idIng = "[[${lastIdForIngredients}]]";
+			var idStep = "[[${lastIdForSteps}]]";
+
+			$("input[name='add_ingredient']").click(function(event) {
+				var line = $("#templateIngredientsRecipe").html();
+				line = line.replace(/{IDING}/g, idIng++);
+				$("#addIngredientsRecipe tbody").append(line);
+
+				return false;
+			});
+
+			$("form").submit(function() {
+				$("#templateIngredientsRecipe").remove();
+
+				return;
+			});
+
+			$("input[name='add_step']").click(function(event) {
+				var line = $("#templateStepsRecipe").html();
+				line = line.replace(/{IDSTEP}/g, idStep++);
+				$("#addStepsRecipe tbody").append(line);
+
+				return false;
+			});
+
+			$("form").submit(function() {
+				$("#templateStepsRecipe").remove();
+
+				return;
+			});
+		});
+
+		var ingredientsHelper = {
+			removeIngredientRecipe : function(id) {
+				$("#rowIng_" + id).remove();
+			}
+		}
+
+		var stepsHelper = {
+			removeStepRecipe : function(id) {
+				$("#rowStep_" + id).remove();
+			}
+		}
+	</script>
+</body>
+</html>

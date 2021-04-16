@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<table th:fragment="stepsRecipe" class="d-none">
+		<tbody id="templateStepsRecipe">
+			<tr id="rowStep_{IDSTEP}">
+				<td class="d-none"><input type="hidden" value="{IDSTEP}"
+					name="step_id[]" /></td>
+				<td><input type="text" value="" name="stepDescription"
+					id="stepDescription_{IDSTEP}" class="form-control" /></td>
+				<td><a class="btn btn-danger btn-xs text-light"
+					onclick="stepsHelper.removeStepRecipe({IDSTEP});">x</a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

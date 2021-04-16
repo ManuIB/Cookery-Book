@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header font-weight-bold" th:text="${title}"></div>
+			<div class="card-body">
+				<h4 class="card-title">
+					<a sec:authorize="hasRole('ROLE_USER')" th:href="@{'/form/'}"
+						class="btn btn-primary btn-xs" th:text="#{list.createRecipe}">crear receta</a>
+				</h4>
+				<div th:if="not ${recipes.totalElements}"
+					class="alert alert-info my-4" th:text="#{recipe.noRecipes}"></div>
+
+				<table th:if="${recipes.totalElements}" class="table table-striped">
+					<thead>
+						<tr>
+							<th th:text="#{recipe.nameRecipe}">nombre receta</th>
+							<th th:text="#{recipe.time}">tiempo</th>
+							<th th:text="#{recipe.commensals}">comensales</th>
+							<th th:text="#{client.createdAt}">fecha</th>
+							<th th:text="#{list.view}">ver</th>
+							<th th:text="#{list.edit}">editar</th>
+							<th th:text="#{list.delete}">eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="recipe: ${recipes}">
+							<td><a class="text-dark" th:href="@{/view/} + ${recipe.id}"
+								th:text="${recipe.name}"></a></td>
+							<td th:text="${recipe.time} + ' ' + #{recipe.minutes}"></td>
+							<td th:text="${recipe.commensals}"></td>
+							<td th:text="${#dates.format(recipe.createdAt, 'dd-MM-yyyy')}"></td>
+							<td><a class="btn btn-outline-secondary btn-sm"
+								th:href="@{/view/} + ${recipe.id}" th:text="#{list.view}"></a></td>
+							<td sec:authorize="hasRole('ROLE_USER')"><a
+								th:if="(${springUser.id} == ${recipe.client.id}) or (${springUser.isAdmin})"
+								class="btn btn-outline-info btn-sm"
+								th:href="@{/form/} + ${recipe.id}" th:text="#{list.edit}"></a></td>
+							<td sec:authorize="hasRole('ROLE_USER')"><a
+								th:if="(${springUser.id} == ${recipe.client.id}) or (${springUser.isAdmin})"
+								class="btn btn-outline-danger btn-sm"
+								th:href="@{/delete/} + ${recipe.id}" th:text="#{list.delete}"
+								th:attr="onClick='return confirm(\'' + #{list.confirm_delete} + '\');'"></a></td>
+						</tr>
+					</tbody>
+				</table>
+				<nav th:replace="paginator-nav :: paginator"></nav>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+		<div class="row justify-content-md-center">
+			<form th:action="@{/login}" method="post"
+				class="form-signin col col-lg-6">
+				<h3 class="form-heading py-2" th:text="#{login.PleaseSignIn}">Please
+					Sign In</h3>
+				<div class="form-group">
+					<input type="email" name="username" id="username"
+						class="form-control" th:placeholder="#{login.userName}" autofocus
+						required />
+				</div>
+				<div class="form-group">
+					<input type="password" name="password" id="password"
+						class="form-control" th:placeholder="#{login.password}" required />
+				</div>
+
+				<div class="form-group py-2">
+					<input type="submit" class="btn btn-lg btn-primary btn-block"
+						th:value="#{login.signIn}" />
+					<p class="text-center py-2">
+						<a th:href="@{/user/form}" th:text="#{login.createAccount}">Create an account</a>
+					</p>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<table th:fragment="ingredientsRecipe" class="d-none">
+		<tbody id="templateIngredientsRecipe">
+			<tr id="rowIng_{IDING}">
+				<td class="d-none"><input type="hidden" value="{IDING}"
+					name="ingredient_id[]" /></td>
+				<td><input type="text" value="" name="ingredientName"
+					id="ingredientName_{IDING}" class="form-control" /></td>
+				<td><input type="number" value="1" name="quantity[]"
+					id="quantity_{IDING}" class="form-control col-sm-3" /></td>
+				<td><select class="form-control" data-style="form-control"
+					id="selectMeasures" name="select_measures[]"
+					th:object="${measures}" data-live-search="true"
+					th:title="#{recipe.measure}" data-size="6">
+						<option value="" th:text="#{recipe.measure}"></option>
+						<option data-tokens th:each="measure : ${measures}"
+							th:value="${measure.id}" th:text="${measure.name}"></option>
+				</select></td>
+				<td><a class="btn btn-danger btn-xs text-light"
+					onclick="ingredientsHelper.removeIngredientRecipe({IDING});">x</a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

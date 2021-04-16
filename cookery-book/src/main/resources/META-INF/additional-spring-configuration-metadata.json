@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "spring.mvn.contentnegotiation.media-types.xlsx",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.mvn.contentnegotiation.media-types.xlsx'"
+  },
+  {
+    "name": "spring.mvn.contentnegotiation.favor-parameter",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.mvn.contentnegotiation.favor-parameter'"
+  }
+]}

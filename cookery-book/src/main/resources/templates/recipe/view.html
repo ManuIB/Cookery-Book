@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<meta charset="UTF-8" />
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header font-weight-bold" th:text="${title}"></div>
+			<div class="card-body">
+				<a sec:authorize="hasRole('ROLE_USER')"
+					th:if="(${springUser.id} == ${recipe.client.id}) or (${springUser.isAdmin})"
+					class="btn btn-info btn-sm" th:href="@{/form/} + ${recipe.id}"
+					th:text="#{recipe.editRecipe}">Edit recipe</a>
+					
+				<div class="row py-3">
+					<ul class="col-xs-12 col-sm-8">
+						<li class="list-group-item list-group-item-primary"
+							th:text="#{recipe.recipeData}"></li>
+						<li class="list-group-item"
+							th:text="#{recipe.titleTime} + ${recipe.time}"></li>
+						<li class="list-group-item"
+							th:text="#{recipe.titleCommensals} + ${recipe.commensals}"></li>
+						<li class="list-group-item"
+							th:text="#{recipe.categories} + ': ' + ${allCategories}"></li>
+						<li class="list-group-item"
+							th:if="${not #strings.isEmpty(recipe.remark)}"
+							th:text="#{recipe.titleRemark} + ${recipe.remark}"></li>
+						<li class="list-group-item"
+							th:if="${#strings.isEmpty(recipe.remark)}"
+							th:text="#{recipe.titleRemark} + ' ' + #{recipe.noRemark}"></li>
+						<li class="list-group-item"
+							th:if="${recipe.videoLink != null && #strings.length(recipe.videoLink) > 0}"><a
+							th:text="#{recipe.titleVideoLink}"></a><a
+							th:href="${recipe.videoLink}" th:text="${recipe.videoLink}"></a></li>
+						<li class="list-group-item"
+							th:text="#{recipe.titleCreatedAt} + ${#dates.format(recipe.createdAt, 'dd-MM-yyyy')}"></li>
+					</ul>
+
+					<img
+						th:if="${recipe.photo != null && #strings.length(recipe.photo) > 0}"
+						class="img-thumbnail rounded float-left" style="max-width: 20%;"
+						th:src="@{'/Users/manolito/uploads/recipes/' + ${recipe.photo}}"
+						th:alt="${recipe.photo}" /> <img
+						th:if="${recipe.photo == null or #strings.length(recipe.photo) == 0}"
+						class="img-thumbnail rounded float-left"
+						th:src="@{'/images/default-recipe.jpg'}" th:alt="${recipe.photo}" />
+				</div>
+
+				<ul class="list-group my-2">
+					<li class="list-group-item list-group-item-success"
+						th:text="#{recipe.ingredients}"></li>
+					<li class="list-group-item"
+						th:each="ingredient: ${recipe.ingredients}"><label
+						th:text="${ingredient.name} + ' - ' + ${ingredient.quantity} + ' ' + ${ingredient.measure.name}"></label>
+					</li>
+				</ul>
+
+				<ul class="list-group my-2">
+					<li class="list-group-item list-group-item-warning"
+						th:text="#{recipe.steps}"></li>
+					<li class="list-group-item" th:each="step: ${recipe.steps}"><label
+						th:text="${step.description}"></label></li>
+				</ul>
+
+			</div>
+		</div>
+
+		<h4 class="card-title my-4">
+			<a class="btn btn-light btn-xs" onclick="history.go(-1);"
+				th:text="'&laquo; ' + #{recipe.back}">Volver</a>
+		</h4>
+
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

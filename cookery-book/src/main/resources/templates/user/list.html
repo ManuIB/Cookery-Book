@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header font-weight-bold" th:text="${title}"></div>
+			<div class="card-body">
+				<h4 class="card-title">
+					<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/form}" class="btn btn-primary btn-sm"
+						th:text="#{list.createClient}">crear cliente</a>
+				</h4>
+				<div th:if="not ${clients.totalElements}"
+					class="alert alert-info my-4"
+					th:text="#{client.noClients}"></div>
+				<table th:if="${clients.totalElements}"
+					class="table table-striped">
+					<thead>
+						<tr>
+							<th sec:authorize="hasRole('ROLE_USER')">id</th>
+							<th th:text="#{client.firstName}">nombre</th>
+							<th th:text="#{client.lastName}">apellidos</th>
+							<th th:text="#{client.email}">email</th>
+							<th th:text="#{client.recipes}">recetas</th>
+							<th sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{list.edit}">editar</th>
+							<th sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{list.delete}">eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="client: ${clients}">
+							<td sec:authorize="hasRole('ROLE_USER')"><a
+								class="btn btn-secondary btn-sm"
+								th:href="@{/user/view/} + ${client.id}" th:text="${client.id}"></a></td>
+							<td th:text="${client.firstName}"></td>
+							<td th:text="${client.lastName}"></td>
+							<td th:text="${client.email}"></td>
+							<td th:text="${client.recipes.size() != null} ? ${client.recipes.size()} : 0"></td>
+							<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-outline-info btn-sm"
+								th:href="@{/user/form/} + ${client.id}" th:text="#{list.edit}"></a></td>
+							<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-outline-danger btn-sm"
+								th:href="@{/user/delete/} + ${client.id}" th:text="#{list.delete}"
+								th:attr="onClick='return confirm(\'' + #{list.confirm_delete} + '\');'"></a></td>
+						</tr>
+					</tbody>
+				</table>
+				<nav th:replace="paginator-nav :: paginator"></nav>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
